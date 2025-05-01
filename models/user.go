@@ -2,8 +2,8 @@ package models
 
 type WhatsAppInfo struct {
 	Phone     string `json:"phone" binding:"required,e164"` 
-	OptIn     bool   `json:"opt_in"`                        
-	LastMsgID string `json:"last_msg_id,omitempty"`         
+	OptIn     bool   `json:"opt_in"`                       
+	LastMsgID string `json:"last_msg_id,omitempty"`        
 }
 
 type User struct {
