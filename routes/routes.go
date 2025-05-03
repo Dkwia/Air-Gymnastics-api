@@ -1,24 +1,17 @@
 package routes
 
 import (
-	"go-gin-api/handlers"
 	"github.com/gin-gonic/gin"
+	"go-whatsapp-api/handlers"
 )
 
 func SetupRoutes(r *gin.Engine) {
-	v1 := r.Group("/api/v1")
+	api := r.Group("/api/v1")
 	{
-		users := v1.Group("/users")
+		users := api.Group("/users")
 		{
-			users.GET("/", handlers.GetUsers)
-			users.GET("/:id", handlers.GetUser)
+			users.GET("/", handlers.GetAllWhatsAppUsers)
 			users.POST("/", handlers.CreateUser)
 		}
-
-		v1.GET("/ping", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "pong",
-			})
-		})
 	}
 }
