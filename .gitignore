@@ -8,5 +8,4 @@
 go.work
 go.work.sum
 .env
-!*.keep
-data/
+data
