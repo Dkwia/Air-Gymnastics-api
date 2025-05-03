@@ -3,23 +3,33 @@ package main
 import (
 	"context"
 	"log"
-	"os"
 	"os/signal"
 	"syscall"
-	"go-gin-api/routes"
-	"go-gin-api/services"
+	"time"
+	
+	_ "github.com/mattn/go-sqlite3"
+	"go-whatsapp-api/handlers"
+	"go-whatsapp-api/models"
+	"go-whatsapp-api/routes"
+	"go-whatsapp-api/services"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	whatsAppService, err := services.NewWhatsAppService()
-	if err != nil {
-		log.Fatalf("Failed to initialize WhatsApp service: %v", err)
+	if err := models.InitDB(); err != nil {
+		log.Fatalf("Failed to init DB: %v", err)
 	}
-	defer whatsAppService.Disconnect()
+	defer models.DB.Close()
+
+	ws, err := services.NewWhatsAppService()
+	if err != nil {
+		log.Fatalf("Failed to init WhatsApp: %v", err)
+	}
+	defer ws.Disconnect()
+
+	handlers.InitHandlers(ws)
 
 	r := gin.Default()
-
 	routes.SetupRoutes(r)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
@@ -27,10 +37,11 @@ func main() {
 
 	go func() {
 		if err := r.Run(":8080"); err != nil {
-			log.Fatalf("Failed to start server: %v", err)
+			log.Fatalf("Server failed: %v", err)
 		}
 	}()
 
 	<-ctx.Done()
-	log.Println("Shutting down gracefully...")
+	log.Println("Shutting down...")
+	time.Sleep(1 * time.Second)
 }
