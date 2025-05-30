@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
+	"github.com/gin-gonic/gin"
 	"go-whatsapp-api/models"
 	"go-whatsapp-api/services"
-	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 var whatsAppService *services.WhatsAppService
@@ -42,9 +42,9 @@ func CreateUser(c *gin.Context) {
 
 	if newUser.WhatsApp.OptIn {
 		msg := fmt.Sprintf("Hello %s! Thanks for registering.", newUser.Username)
-		if _, err := whatsAppService.SendMessage(newUser.WhatsApp.Phone, msg); err != nil {
+		if _, err := whatsAppService.SendMessage(newUser.WhatsApp.Phone+"@s.whatsapp.net", msg); err != nil {
 			c.JSON(http.StatusCreated, gin.H{
-				"user": newUser,
+				"user":    newUser,
 				"warning": "WhatsApp message failed: " + err.Error(),
 			})
 			return

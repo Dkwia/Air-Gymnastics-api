@@ -2,8 +2,8 @@ package models
 
 import (
 	"database/sql"
-	"log"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
 )
 
 type WhatsAppInfo struct {
@@ -26,7 +26,7 @@ func InitDB() error {
 	if err != nil {
 		return err
 	}
-	
+
 	_, err = DB.Exec(`
 		CREATE TABLE IF NOT EXISTS users (
 			id TEXT PRIMARY KEY,

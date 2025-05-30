@@ -6,13 +6,13 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	
+
+	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 	"go-whatsapp-api/handlers"
 	"go-whatsapp-api/models"
 	"go-whatsapp-api/routes"
 	"go-whatsapp-api/services"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
