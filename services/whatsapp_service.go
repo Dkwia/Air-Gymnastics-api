@@ -62,7 +62,12 @@ func NewWhatsAppService() (*WhatsAppService, error) {
 
 func (svc *WhatsAppService) ValidatePhone(phone string) bool {
 	_, err := types.ParseJID(phone)
-	return err == nil
+	if err != nil {
+		log.Printf("Invalid phone number: %s, error: %v", phone, err)
+		return false
+	}
+	log.Printf("Valid phone number: %s", phone)
+	return true
 }
 
 func (svc *WhatsAppService) SendMessage(phone, message string) (string, error) {
